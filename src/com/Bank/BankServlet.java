@@ -45,6 +45,7 @@ public class BankServlet extends HttpServlet {
 		long routing_number = Long.parseLong(request.getParameter("routing_number"));
 		long acc_number = Long.parseLong(request.getParameter("account_number"));
 		double total_cost = Double.parseDouble(request.getParameter("total_cost"));
+		int password = Integer.parseInt(request.getParameter("password"));
 		double new_balance;
 		
 		String error_message="";
@@ -52,9 +53,16 @@ public class BankServlet extends HttpServlet {
 		
 		System.out.println("Total Ticket cost: "+ total_cost);
 		
+		System.out.println("password: "+ password);
+		
 		Bank t = new Bank();
 		try {
-			if(t.validateBankDetails(acc_number, routing_number, total_cost)){ // validated
+			if(t.validateBankDetails(acc_number, routing_number, total_cost, password)){ // validated
+				
+				if(t.getPassword() != password){
+					error_message = error_message + "Entered Password is wrong <br/>";
+					success_flag = false;
+				}
 				
 				// check if routing number is valid one or not
 				if(t.getRouting_number() != routing_number){

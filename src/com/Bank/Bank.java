@@ -10,6 +10,15 @@ public class Bank {
 	private long account_number;
 	private long routing_number;
 	private double balance;
+	private int password;
+	
+	public int getPassword() {
+		return password;
+	}
+	public void setPassword(int password) {
+		this.password = password;
+	}
+
 	private JDBCHelper db;
 	
 	public long getAccount_number() {
@@ -54,10 +63,12 @@ public class Bank {
 	 * This Function validates the account number by checking 
 	 * if the account number exists in the database
 	 */
-	public boolean validateBankDetails(long entered_account_number, long entered_routing_number, double ticket_cost) throws SQLException{
+	public boolean validateBankDetails(long entered_account_number, long entered_routing_number, double ticket_cost, int password) throws SQLException{
 		
 		boolean status = false;
 		connectDB();
+		
+		System.out.println("In Bank.java");
 		
 		ArrayList<Object> param =  new ArrayList<Object>();
 		param.add(entered_account_number);
@@ -73,6 +84,7 @@ public class Bank {
 			setAccount_number(rs1.getLong("account_id"));
 			setBalance(rs1.getDouble("balance"));
 			setRouting_number(rs1.getLong("routing_number"));
+			setPassword(rs1.getInt("password"));
 		}
 		closeDB();
 		return status;
